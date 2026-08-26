@@ -166,5 +166,5 @@ class TestFitcamXSource:
         mock_get.assert_called_once_with(
             "http://192.168.1.254/CARDV/Movie/20260731165428_040848A.TS",
             stream=True,
-            timeout=15,
+            timeout=60,
         )
