@@ -103,13 +103,15 @@ def download_videos_from_source(videodb, source, video_recording_window=0):
                 video.status = VideoStatus.DOWNLOADED
                 video.crc32c = stream.get_crc32c_base64()
 
+                logger.debug("Downloaded video: %s with CRC32C: %s", video.filename, video.crc32c)
+
                 videodb.update_videos([video])
                 downloaded_count += 1
 
                 logger.debug("Downloaded video: %s", video.filename)
             except FileNotFoundError as e:
-                logger.warning("Video %s not found on source. Marking as 'not found'.", video.filename)
-                video.status = VideoStatus.NOT_FOUND
+                logger.warning("Video %s not found on source. Marking as lost.", video.filename)
+                video.status = VideoStatus.LOST
                 videodb.update_videos([video])
             except Exception as e:
                 logger.error("Error downloading video %s: %s", video.filename, e)
@@ -148,8 +150,10 @@ def upload_to_destination(videodb:VideoDatabase, destination):
                     logger.warning("File %s is missing from local storage. Resetting status to 'found'.", v.filename)
                     v.status = VideoStatus.FOUND
                     videodb.update_videos([v])
+                except Exception as e:
+                    logger.error("Error uploading video %s: %s", v.filename, e)
     except Exception as e:
-        logger.exception("Error during upload: %s", e)
+        logger.error("Error during upload: %s", e)
 
 
 def _install_shutdown_handler() -> threading.Event:

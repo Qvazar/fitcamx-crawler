@@ -30,8 +30,7 @@ class _VideoFileStorage:
 
         with open(temp_path, 'wb') as f:
             for chunk in data:
-                if chunk:
-                    f.write(chunk)
+                f.write(chunk)
             f.flush()
         os.replace(temp_path, final_path)  # Rename temp file to final filename after successful download
         return os.path.abspath(final_path)
