@@ -21,7 +21,7 @@ logger.debug(f"VIDEO_EXTENSIONS: {VIDEO_EXTENSIONS}")
 
 def _log_crawl_url_response_to_file(url: str, response: requests.Response):
     """Log the response of a crawl URL to a file for debugging purposes."""
-    if logger.isDebugEnabled():
+    if logger.getChild("RESPONSE").isDebugEnabled():
         try:
             log_dir = os.path.join(os.getcwd(), "fitcamx_logs")
             os.makedirs(log_dir, exist_ok=True)
