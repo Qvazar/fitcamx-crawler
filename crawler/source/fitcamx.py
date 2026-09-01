@@ -113,7 +113,7 @@ class _FitcamXSource:
                 raise FileNotFoundError(f"Video {video.filename} not found at {video_url}")
             
             video_stream.raise_for_status()
-            yield from video_stream.iter_content(chunk_size=128)  # Yield the video stream in chunks for the video
+            yield from video_stream.iter_content(chunk_size=512*1024)  # Yield the video stream in chunks for the video
 
     @timed
     def delete_video(self, video: VideoRecord):
